@@ -76,10 +76,10 @@ void Game::spawnEnemies()
 	//int countBlock = 0;
 
 
-	for (int j = 3; j < blockY; j++)
+	for (int j = 0; j < blockY; j++)
 	{
 
-		for (int i = 0; i < blockX; i++)
+		for (int i = 3; i < blockX; i++)
 		{
 			if (enemies.size() < maxBlocks)
 			{
@@ -103,7 +103,6 @@ void Game::playerBallCollision()
 	}
 }
 
-//void Game::enemiesBallCollision (std::vector<Enemy>& enemies, Ball& ball)
 void Game::enemiesBallCollision()
 // gora -- dol wydaje sie dzialac dobrze (cos i tak nie dziala)
 // zle dziala na boki, dlaczego nie dziala odbijanie od lewej??? pilka idzie tylko --> (zmienic w ball.cpp)
