@@ -4,7 +4,7 @@
 
 void Ball::initVariables()
 {
-	//ballVelocity = 5.f;
+	ballVelocity = 4.f;
 }
 
 void Ball::initShape()
@@ -54,8 +54,8 @@ void Ball::moveDown()
 
 void Ball::updateWindowBoundsCollision()
 {
-	shape.move(velocity);
-	/*shape.move(4, 0);*/
+	//shape.move(velocity);
+	shape.move(4, 0);
 	if (shape.getGlobalBounds().left <= 0)													// left
 		velocity.x = ballVelocity;	//shape.move(velocity.x, shape.getPosition().y);
 

@@ -6,17 +6,10 @@ void Game::initVariables()
 	window = nullptr;
 
 	endGame = false;
-
-	//blockX = 10;
-	//blockY = 5;
-	//countBlock = 0;
-	//maxBlocks = 50;
 }
 
 void Game::initWindow()
 {
-	//videoMode.width = 800;
-	//videoMode.height = 600;
 	videoMode = VideoMode(800, 600);
 	window = new RenderWindow(videoMode, "Arcanoid Game", Style::Titlebar | Style::Close);
 	window->setFramerateLimit(60);
@@ -107,6 +100,8 @@ void Game::enemiesBallCollision()
 // gora -- dol wydaje sie dzialac dobrze (cos i tak nie dziala)
 // zle dziala na boki, dlaczego nie dziala odbijanie od lewej??? pilka idzie tylko --> (zmienic w ball.cpp)
 // nie wiem, dlaczego tak dziala
+// change ball coordinates -> ball.h (constructor)
+// change ball dir -> void Ball::updateWindowBoundsCollision(), shape.move()
 {
 	for (int i = 0; i < enemies.size(); ++i)
 	{
