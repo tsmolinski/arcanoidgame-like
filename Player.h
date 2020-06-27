@@ -27,14 +27,15 @@ public:
 	virtual ~Player();
 
 	// accessors
-	const FloatRect playerBounds();
+	const FloatRect playerBounds() const;
+	const Vector2f& getPosition() const;
 
 	// modifiers
 	void setPosition(const float x, const float y);
 
 	// functions
 	void move(const float dir_x, const float dir_y);
-	void update(const RenderTarget* target);
+	void update();
 	void render(RenderTarget* target);
 };
 

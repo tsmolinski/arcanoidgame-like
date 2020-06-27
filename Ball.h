@@ -13,7 +13,7 @@ class Ball
 private: 
 	CircleShape shape;
 
-	const float ballVelocity{ 5.f };
+	const float ballVelocity{ 7.f };
 	Vector2f velocity{ballVelocity, ballVelocity};
 
 	void initVariables();
@@ -23,7 +23,9 @@ public:
 	Ball(float x = 30.f, float y = 40.f);
 	virtual ~Ball();
 
+	// accessors
 	const FloatRect ballBounds() const;
+	const Vector2f& getPosition() const;
 
 	// ball move (for paddle and enemies collision)
 	void moveLeft();

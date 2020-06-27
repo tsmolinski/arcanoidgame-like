@@ -11,6 +11,7 @@ void Player::initShape()
 	shape.setFillColor(Color::Green);
 	shape.setSize(Vector2f(140.f, 30.f));
 
+
 }
 
 Player::Player(float x, float y)
@@ -27,9 +28,14 @@ Player::~Player()
 }
 
 // accessors
-const FloatRect Player::playerBounds()
+const FloatRect Player::playerBounds() const
 {
 	return shape.getGlobalBounds();
+}
+
+const Vector2f& Player::getPosition() const
+{
+	return shape.getPosition();
 }
 
 // modifiers
@@ -44,21 +50,8 @@ void Player::move(const float dir_x, const float dir_y)
 	shape.move(movementSpeed * dir_x, movementSpeed * dir_y);
 }
 
-//void Player::updateWindowBoundsCollision(const RenderTarget* target)
-//{
-//	// left
-//	if (shape.getGlobalBounds().left <= 0.f)
-//		shape.setPosition(0.f, shape.getGlobalBounds().top);
-//	// right
-//	else if (shape.getGlobalBounds().left + shape.getGlobalBounds().width >= target->getSize().x)
-//		shape.setPosition(target->getSize().x - shape.getGlobalBounds().width, shape.getGlobalBounds().top);
-//
-//}
-
-void Player::update(const RenderTarget* target)
+void Player::update()
 {
-	// player and window bounds collision
-	//updateWindowBoundsCollision(target);
 }
 
 void Player::render(RenderTarget* target)

@@ -13,12 +13,13 @@ class Enemy
 private:
 	RectangleShape shape;
 
-	void initShape(); //void initShape(const RenderWindow& window); 
+	void initShape(); 
 
 public:
-	Enemy(float x, float y); //Enemy(const RenderWindow& window);
+	Enemy(float x, float y);
 	virtual ~Enemy();
 
+	// accessors
 	const FloatRect enemyBounds() const;
 
 	// functions

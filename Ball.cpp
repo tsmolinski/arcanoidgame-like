@@ -25,9 +25,15 @@ Ball::~Ball()
 
 }
 
+// accessors
 const FloatRect Ball::ballBounds() const
 {
 	return shape.getGlobalBounds();
+}
+
+const Vector2f& Ball::getPosition() const
+{
+	return shape.getPosition();
 }
 
 // ball move (for collision with paddle and enemies)
@@ -53,7 +59,7 @@ void Ball::moveDown()
 
 void Ball::move(const float dir_x, const float dir_y)
 {
-	return shape.move(dir_x, dir_y);
+	return shape.move(velocity.x * dir_x, velocity.y * dir_y);
 }
 
 void Ball::update()

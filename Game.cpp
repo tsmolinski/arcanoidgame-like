@@ -79,14 +79,14 @@ void Game::spawnEnemies()
 	int posX = 60, posY = 20;
 	int blockX = 10;
 	int blockY = 5;
-	int maxBlocks = 20;
+	int maxBlocks = 50;
 	//int countBlock = 0;
 
 
 	for (int j = 0; j < blockY; j++)
 	{
 
-		for (int i = 3; i < blockX; i++)
+		for (int i = 0; i < blockX; i++)
 		{
 			if (enemies.size() < maxBlocks)
 			{
@@ -120,30 +120,46 @@ void Game::updateBallWindowCollision()
 		if (ball.ballBounds().left <= 0)
 		{
 			ball.moveRight();
+			//ball.move(-1.f, 1.f);
 		}
 
 		else if (ball.ballBounds().left + ball.ballBounds().width >= window->getSize().x)
 		{
 			ball.moveLeft();
+			//ball.move(-1.f, 1.f);
 		}
 
 		if (ball.ballBounds().top <= 0)
 		{
 			ball.moveDown();
+			//ball.move(1.f, -1.f);
 		}
 
 		else if (ball.ballBounds().top + ball.ballBounds().height >= window->getSize().y)
 		{
 			ball.moveUp();
+			//ball.move(1.f, -1.f);
 		}
 }
 
 void Game::playerBallCollision()
 {
 	// just change y direction, x still the same
-	if (player.playerBounds().intersects(ball.ballBounds()))
+	//if (player.playerBounds().intersects(ball.ballBounds()))
+		//ball.moveUp();
+
+	if (player.playerBounds().intersects(ball.ballBounds()) &&
+		ball.getPosition().x < player.getPosition().x)
 	{
 		ball.moveUp();
+		ball.moveLeft();
+	}
+
+	else if (player.playerBounds().intersects(ball.ballBounds()) &&
+		ball.getPosition().x > player.getPosition().x)
+	{
+		ball.moveUp();
+		ball.moveRight();
 	}
 }
 
@@ -154,41 +170,41 @@ void Game::enemiesBallCollision()
 // change ball coordinates -> ball,h (constructor)
 // change ball dir -> Ball::update()
 {
-	for (int i = 0; i < enemies.size(); ++i)
-	{
-		bool enemy_removed = false;
-		if (ball.ballBounds().intersects(enemies[i]->enemyBounds()))
-		{
-			//if ((ball.ballBounds().top <= (enemies[i]->enemyBounds().top + enemies[i]->enemyBounds().height) && !enemy_removed))
-			//{
-			//	ball.moveDown();
-			//	enemies.erase(enemies.begin() + i);
-			//	bool enemy_removed = true;
-			//}
-				if (((ball.ballBounds().top + ball.ballBounds().height) >= enemies[i]->enemyBounds().top) && !enemy_removed)
-				{
-					ball.moveUp();
-					enemies.erase(enemies.begin() + i);
-					bool enemy_removed = true;
-				}
-
-			//enemies.erase(enemies.begin() + i);
-			//std::cout << enemies.size() << "\n";
-
-			//if ((ball.ballBounds().left + ball.ballBounds().width) >= enemies[i].enemyBounds().left)
-			//{
-			//	ball.moveLeft();
-			//	enemies.erase(enemies.begin() + i);
-			//}
-
-			//if (ball.ballBounds().left <= enemies[i].enemyBounds().left + enemies[i].enemyBounds().width)
-			//{
-			//	ball.moveRight();
-			//	enemies.erase(enemies.begin() + i);
-			//}
-
-		}
-	}
+//	for (int i = 0; i < enemies.size(); ++i)
+//	{
+//		bool enemy_removed = false;
+//		if (ball.ballBounds().intersects(enemies[i]->enemyBounds()))
+//		{
+//			//if ((ball.ballBounds().top <= (enemies[i]->enemyBounds().top + enemies[i]->enemyBounds().height) && !enemy_removed))
+//			//{
+//			//	ball.moveDown();
+//			//	enemies.erase(enemies.begin() + i);
+//			//	bool enemy_removed = true;
+//			//}
+//				if (((ball.ballBounds().top + ball.ballBounds().height) >= enemies[i]->enemyBounds().top) && !enemy_removed)
+//				{
+//					ball.moveUp();
+//					enemies.erase(enemies.begin() + i);
+//					bool enemy_removed = true;
+//				}
+//
+//			//enemies.erase(enemies.begin() + i);
+//			//std::cout << enemies.size() << "\n";
+//
+//			//if ((ball.ballBounds().left + ball.ballBounds().width) >= enemies[i].enemyBounds().left)
+//			//{
+//			//	ball.moveLeft();
+//			//	enemies.erase(enemies.begin() + i);
+//			//}
+//
+//			//if (ball.ballBounds().left <= enemies[i].enemyBounds().left + enemies[i].enemyBounds().width)
+//			//{
+//			//	ball.moveRight();
+//			//	enemies.erase(enemies.begin() + i);
+//			//}
+//
+//		}
+//	}
 }
 
 void Game::update()
