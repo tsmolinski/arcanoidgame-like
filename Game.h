@@ -45,10 +45,10 @@ public:
 
 	// functions
 	void pollEvents();
-
+	void updateInput();
 	void spawnEnemies();
-
-	void updateWindowBoundsCollision();
+	void updatePlayerWindowCollision();
+	void updateBallWindowCollision();
 	void playerBallCollision();
 	void enemiesBallCollision();
 

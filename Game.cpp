@@ -59,6 +59,20 @@ void Game::pollEvents()
 	}
 }
 
+void Game::updateInput()
+{
+	//keyboard input
+	//left / right
+	if (Keyboard::isKeyPressed(Keyboard::A) | Keyboard::isKeyPressed(Keyboard::Left))
+	{
+		player.move(-1.f, 0.f);
+	}
+	else if (Keyboard::isKeyPressed(Keyboard::D) | Keyboard::isKeyPressed(Keyboard::Right))
+	{
+		player.move(1.f, 0.f);
+	}
+}
+
 void Game::spawnEnemies()
 {
 
@@ -87,10 +101,22 @@ void Game::spawnEnemies()
 	//std::cout << "enemy 30" << " bound top: " << enemies[29].enemyBounds().top << "\n";
 }
 
-void Game::updateWindowBoundsCollision()
+void Game::updatePlayerWindowCollision()
 {
-		//shape.move(velocity);
-		//ball.move(4, 4);
+	// left
+	if (player.playerBounds().left <= 0.f)
+	{
+		player.setPosition(0.f, player.playerBounds().top);
+	}
+	// right
+	else if (player.playerBounds().left + player.playerBounds().width >= window->getSize().x)
+	{
+		player.setPosition(window->getSize().x - player.playerBounds().width, player.playerBounds().top);
+	}
+}
+
+void Game::updateBallWindowCollision()
+{
 		if (ball.ballBounds().left <= 0)
 		{
 			ball.moveRight();
@@ -125,8 +151,8 @@ void Game::enemiesBallCollision()
 // gora -- dol wydaje sie dzialac dobrze (cos i tak nie dziala)
 // zle dziala na boki, dlaczego nie dziala odbijanie od lewej??? pilka idzie tylko --> (zmienic w ball.cpp)
 // nie wiem, dlaczego tak dziala
-// change ball coordinates -> ball.h (constructor)
-// change ball dir -> void Game::updateWindowBoundsCollision(), ball.move()
+// change ball coordinates -> ball,h (constructor)
+// change ball dir -> Ball::update()
 {
 	for (int i = 0; i < enemies.size(); ++i)
 	{
@@ -167,11 +193,12 @@ void Game::enemiesBallCollision()
 
 void Game::update()
 {
-	player.update(window);
+	updateInput();
 	pollEvents();
-	updateWindowBoundsCollision();
-	spawnEnemies();
 	ball.update();
+	updatePlayerWindowCollision();
+	updateBallWindowCollision();
+	spawnEnemies();
 	playerBallCollision();
 	enemiesBallCollision();
 }

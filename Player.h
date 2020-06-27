@@ -26,10 +26,14 @@ public:
 	Player(float x = 350.f, float y = 550.f);
 	virtual ~Player();
 
-	FloatRect playerBounds();
+	// accessors
+	const FloatRect playerBounds();
 
-	void updateInput();
-	void updateWindowBoundsCollision(const RenderTarget* target);
+	// modifiers
+	void setPosition(const float x, const float y);
+
+	// functions
+	void move(const float dir_x, const float dir_y);
 	void update(const RenderTarget* target);
 	void render(RenderTarget* target);
 };
