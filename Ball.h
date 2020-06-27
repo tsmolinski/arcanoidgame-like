@@ -13,8 +13,8 @@ class Ball
 private: 
 	CircleShape shape;
 
-	//const float ballVelocity{ 4.f };
-	float ballVelocity;
+	const float ballVelocity{ 4.f };
+	//float ballVelocity;
 	Vector2f velocity{ballVelocity, ballVelocity};
 
 	void initVariables();
@@ -33,7 +33,8 @@ public:
 	void moveDown();
 
 	// functions
-	void updateWindowBoundsCollision();
+	void move(const float dir_x, const float dir_y);
+	//void updateWindowBoundsCollision();
 	void update();
 	void render(RenderTarget& target);
 	

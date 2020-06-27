@@ -17,8 +17,8 @@ using namespace sf;
 class Game
 {
 private:
-	//variables
-	//window
+	// variables
+	// window
 	RenderWindow* window;
 	VideoMode videoMode;
 	Event ev;
@@ -30,28 +30,25 @@ private:
 	Ball ball;
 
 	std::vector<Enemy*> enemies;
-	//int blockX;
-	//int blockY;
-	//int countBlock;
-	//int maxBlocks;
 
-	//private functions
+	// private functions
 	void initVariables();
 	void initWindow();
 
 public:
-	//constructors / destructors
+	// constructors / destructors
 	Game();
 	virtual ~Game();
 
-	//accessors
+	// accessors
 	const bool running() const;
 
-	//functions
+	// functions
 	void pollEvents();
 
 	void spawnEnemies();
 
+	void updateWindowBoundsCollision();
 	void playerBallCollision();
 	void enemiesBallCollision();
 

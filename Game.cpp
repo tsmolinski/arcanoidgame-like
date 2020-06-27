@@ -1,6 +1,6 @@
 #include "Game.h"
 
-//private functions
+// private functions
 void Game::initVariables()
 {
 	window = nullptr;
@@ -16,7 +16,7 @@ void Game::initWindow()
 
 }
 
-//constructors / destructors
+// constructors / destructors
 Game::Game()
 {
 	initVariables();
@@ -34,16 +34,16 @@ Game::~Game()
 	}
 }
 
-//accessors
+// accessors
 const bool Game::running() const
 {
 	return window->isOpen();
 }
 
-//functions
+// functions
 void Game::pollEvents()
 {
-	//event polling
+	// event polling
 	while (window->pollEvent(ev))
 	{
 		switch (ev.type)
@@ -87,6 +87,31 @@ void Game::spawnEnemies()
 	//std::cout << "enemy 30" << " bound top: " << enemies[29].enemyBounds().top << "\n";
 }
 
+void Game::updateWindowBoundsCollision()
+{
+		//shape.move(velocity);
+		//ball.move(4, 4);
+		if (ball.ballBounds().left <= 0)
+		{
+			ball.moveRight();
+		}
+
+		else if (ball.ballBounds().left + ball.ballBounds().width >= window->getSize().x)
+		{
+			ball.moveLeft();
+		}
+
+		if (ball.ballBounds().top <= 0)
+		{
+			ball.moveDown();
+		}
+
+		else if (ball.ballBounds().top + ball.ballBounds().height >= window->getSize().y)
+		{
+			ball.moveUp();
+		}
+}
+
 void Game::playerBallCollision()
 {
 	// just change y direction, x still the same
@@ -101,7 +126,7 @@ void Game::enemiesBallCollision()
 // zle dziala na boki, dlaczego nie dziala odbijanie od lewej??? pilka idzie tylko --> (zmienic w ball.cpp)
 // nie wiem, dlaczego tak dziala
 // change ball coordinates -> ball.h (constructor)
-// change ball dir -> void Ball::updateWindowBoundsCollision(), shape.move()
+// change ball dir -> void Game::updateWindowBoundsCollision(), ball.move()
 {
 	for (int i = 0; i < enemies.size(); ++i)
 	{
@@ -142,10 +167,10 @@ void Game::enemiesBallCollision()
 
 void Game::update()
 {
-	pollEvents();
-
-	spawnEnemies();
 	player.update(window);
+	pollEvents();
+	updateWindowBoundsCollision();
+	spawnEnemies();
 	ball.update();
 	playerBallCollision();
 	enemiesBallCollision();

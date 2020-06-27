@@ -4,7 +4,7 @@
 
 void Ball::initVariables()
 {
-	ballVelocity = 4.f;
+	//ballVelocity = 4.f;
 }
 
 void Ball::initShape()
@@ -52,26 +52,31 @@ void Ball::moveDown()
 	velocity.y = ballVelocity;
 }
 
-void Ball::updateWindowBoundsCollision()
+void Ball::move(const float dir_x, const float dir_y)
 {
-	//shape.move(velocity);
-	shape.move(4, 0);
-	if (shape.getGlobalBounds().left <= 0)													// left
-		velocity.x = ballVelocity;	//shape.move(velocity.x, shape.getPosition().y);
-
-	else if (shape.getGlobalBounds().left + shape.getGlobalBounds().width >= 800)			// right
-		velocity.x = -ballVelocity;
-
-	else if (shape.getGlobalBounds().top <= 0)												// top
-		velocity.y = ballVelocity;
-
-	else if (shape.getGlobalBounds().top + shape.getGlobalBounds().height >= 600)			// bottom
-		velocity.y = -ballVelocity;
+	return shape.move(dir_x, dir_y);
 }
+
+//void Ball::updateWindowBoundsCollision()
+//{
+//	//shape.move(velocity);
+//	shape.move(4, 0);
+//	if (shape.getGlobalBounds().left <= 0)													// left
+//		velocity.x = ballVelocity;	//shape.move(velocity.x, shape.getPosition().y);
+//
+//	else if (shape.getGlobalBounds().left + shape.getGlobalBounds().width >= 800)			// right
+//		velocity.x = -ballVelocity;
+//
+//	else if (shape.getGlobalBounds().top <= 0)												// top
+//		velocity.y = ballVelocity;
+//
+//	else if (shape.getGlobalBounds().top + shape.getGlobalBounds().height >= 600)			// bottom
+//		velocity.y = -ballVelocity;
+//}
 
 void Ball::update()
 {
-	updateWindowBoundsCollision();
+	shape.move(velocity);
 }
 
 void Ball::render(RenderTarget& target)
