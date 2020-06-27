@@ -120,34 +120,26 @@ void Game::updateBallWindowCollision()
 		if (ball.ballBounds().left <= 0)
 		{
 			ball.moveRight();
-			//ball.move(-1.f, 1.f);
 		}
 
 		else if (ball.ballBounds().left + ball.ballBounds().width >= window->getSize().x)
 		{
 			ball.moveLeft();
-			//ball.move(-1.f, 1.f);
 		}
 
 		if (ball.ballBounds().top <= 0)
 		{
 			ball.moveDown();
-			//ball.move(1.f, -1.f);
 		}
 
 		else if (ball.ballBounds().top + ball.ballBounds().height >= window->getSize().y)
 		{
 			ball.moveUp();
-			//ball.move(1.f, -1.f);
 		}
 }
 
 void Game::playerBallCollision()
 {
-	// just change y direction, x still the same
-	//if (player.playerBounds().intersects(ball.ballBounds()))
-		//ball.moveUp();
-
 	if (player.playerBounds().intersects(ball.ballBounds()) &&
 		ball.getPosition().x < player.getPosition().x)
 	{
