@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include "Game.h"
 
 // private functions
@@ -156,47 +158,89 @@ void Game::playerBallCollision()
 }
 
 void Game::enemiesBallCollision()
-// gora -- dol wydaje sie dzialac dobrze (cos i tak nie dziala)
-// zle dziala na boki, dlaczego nie dziala odbijanie od lewej??? pilka idzie tylko --> (zmienic w ball.cpp)
-// nie wiem, dlaczego tak dziala
 // change ball coordinates -> ball,h (constructor)
 // change ball dir -> Ball::update()
 {
-//	for (int i = 0; i < enemies.size(); ++i)
-//	{
-//		bool enemy_removed = false;
-//		if (ball.ballBounds().intersects(enemies[i]->enemyBounds()))
-//		{
-//			//if ((ball.ballBounds().top <= (enemies[i]->enemyBounds().top + enemies[i]->enemyBounds().height) && !enemy_removed))
-//			//{
-//			//	ball.moveDown();
-//			//	enemies.erase(enemies.begin() + i);
-//			//	bool enemy_removed = true;
-//			//}
-//				if (((ball.ballBounds().top + ball.ballBounds().height) >= enemies[i]->enemyBounds().top) && !enemy_removed)
-//				{
-//					ball.moveUp();
-//					enemies.erase(enemies.begin() + i);
-//					bool enemy_removed = true;
-//				}
-//
-//			//enemies.erase(enemies.begin() + i);
-//			//std::cout << enemies.size() << "\n";
-//
-//			//if ((ball.ballBounds().left + ball.ballBounds().width) >= enemies[i].enemyBounds().left)
-//			//{
-//			//	ball.moveLeft();
-//			//	enemies.erase(enemies.begin() + i);
-//			//}
-//
-//			//if (ball.ballBounds().left <= enemies[i].enemyBounds().left + enemies[i].enemyBounds().width)
-//			//{
-//			//	ball.moveRight();
-//			//	enemies.erase(enemies.begin() + i);
-//			//}
-//
-//		}
-//	}
+	for (int i = 0; i < enemies.size(); ++i)
+	{
+		bool enemy_removed = false;
+		if (ball.ballBounds().intersects(enemies[i]->enemyBounds()))
+		{
+			// if Ball(bottom) - Block(top) < Block(bottom) - Ball(top) than we hit the block from the top
+			bool ballFromTop(std::abs((ball.ballBounds().top + ball.ballBounds().height) - (enemies[i]->enemyBounds().top)) <
+							 std::abs((enemies[i]->enemyBounds().top + enemies[i]->enemyBounds().height) - ball.ballBounds().top));
+
+			// if Ball(right) - Block(left) < Block(right) - Ball(left) than we hit the block from the left
+			bool ballFromLeft(std::abs((ball.ballBounds().left + ball.ballBounds().width) - enemies[i]->enemyBounds().left) <
+							  std::abs((enemies[i]->enemyBounds().left + enemies[i]->enemyBounds().width) - ball.ballBounds().left));
+
+			// if minOverlapVertically is less than minOverlapHorizontally, we hit block vertically
+			float minOverlapVertically{
+				ballFromTop ?
+				(ball.ballBounds().top + ball.ballBounds().height - enemies[i]->enemyBounds().top) :
+				(enemies[i]->enemyBounds().top + enemies[i]->enemyBounds().height - ball.ballBounds().top)
+			};
+
+			float minOverlapHorizontally{
+				ballFromLeft ?
+				(ball.ballBounds().left + ball.ballBounds().width - enemies[i]->enemyBounds().left) :
+				(enemies[i]->enemyBounds().left + enemies[i]->enemyBounds().width - ball.ballBounds().left)
+			};
+
+			if (std::abs(minOverlapVertically) < std::abs(minOverlapHorizontally))
+			{
+				if (ballFromTop)
+				{
+					ball.moveUp();
+				}
+				else
+				{
+					ball.moveDown();
+				}
+			}
+			else if (std::abs(minOverlapHorizontally) < std::abs(minOverlapVertically))
+			{
+				if (ballFromLeft)
+				{
+					ball.moveLeft();
+				}
+				else
+				{
+					ball.moveRight();
+				}
+			}
+
+
+			//if ((ball.ballBounds().top <= (enemies[i]->enemyBounds().top + enemies[i]->enemyBounds().height) && !enemy_removed))
+			//{
+			//	ball.moveDown();
+			//	enemies.erase(enemies.begin() + i);
+			//	bool enemy_removed = true;
+			//}
+				//if (((ball.ballBounds().top + ball.ballBounds().height) >= enemies[i]->enemyBounds().top) && !enemy_removed)
+				//{
+				//	ball.moveUp();
+				//	enemies.erase(enemies.begin() + i);
+				//	bool enemy_removed = true;
+				//}
+
+			//enemies.erase(enemies.begin() + i);
+			//std::cout << enemies.size() << "\n";
+
+			//if ((ball.ballBounds().left + ball.ballBounds().width) >= enemies[i].enemyBounds().left)
+			//{
+			//	ball.moveLeft();
+			//	enemies.erase(enemies.begin() + i);
+			//}
+
+			//if (ball.ballBounds().left <= enemies[i].enemyBounds().left + enemies[i].enemyBounds().width)
+			//{
+			//	ball.moveRight();
+			//	enemies.erase(enemies.begin() + i);
+			//}
+
+		}
+	}
 }
 
 void Game::update()
