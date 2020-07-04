@@ -93,14 +93,9 @@ void Game::spawnEnemies()
 			if (enemies.size() < maxBlocks)
 			{
 				enemies.push_back(new Enemy(((i + 1) * (posX + 10)), ((j + 1) * (posY + 10))));
-				//std::cout << "Enemy size: " << enemies.size() << "\n";
-				//std::cout << "enemy #" << i << " bound top: " << enemies[i].enemyBounds().top << "\n";
-				//countBlock++;
-				//std::cout << "countBlock: " << countBlock << "\n";
 			}
 		}
 	}
-	//std::cout << "enemy 30" << " bound top: " << enemies[29].enemyBounds().top << "\n";
 }
 
 void Game::updatePlayerWindowCollision()
@@ -108,12 +103,12 @@ void Game::updatePlayerWindowCollision()
 	// left
 	if (player.playerBounds().left <= 0.f)
 	{
-		player.setPosition(0.f, player.playerBounds().top);
+		player.setPosition(0.f, player.getPosition().y);
 	}
 	// right
 	else if (player.playerBounds().left + player.playerBounds().width >= window->getSize().x)
 	{
-		player.setPosition(window->getSize().x - player.playerBounds().width, player.playerBounds().top);
+		player.setPosition(window->getSize().x - player.playerBounds().width, player.getPosition().y);
 	}
 }
 
@@ -142,18 +137,21 @@ void Game::updateBallWindowCollision()
 
 void Game::playerBallCollision()
 {
+	// +70.f, because paddle origin is in top left corner, the paddle width is 140.f, 70.f is the middle of the paddle
 	if (player.playerBounds().intersects(ball.ballBounds()) &&
-		ball.getPosition().x < player.getPosition().x)
+		ball.getPosition().x < player.getPosition().x + 70.f)
 	{
 		ball.moveUp();
 		ball.moveLeft();
 	}
 
-	else if (player.playerBounds().intersects(ball.ballBounds()) &&
-		ball.getPosition().x > player.getPosition().x)
+	if (player.playerBounds().intersects(ball.ballBounds()) &&
+		ball.getPosition().x > player.getPosition().x + 70.f)
 	{
 		ball.moveUp();
 		ball.moveRight();
+		std::cout << "player: " << player.getPosition().x << "\n";
+		std::cout << "ball: " << ball.getPosition().x << "\n";
 	}
 }
 
@@ -161,9 +159,9 @@ void Game::enemiesBallCollision()
 // change ball coordinates -> ball,h (constructor)
 // change ball dir -> Ball::update()
 {
-	for (int i = 0; i < enemies.size(); ++i)
+	bool enemy_removed = false;
+	for (int i = 0; i < enemies.size() && !enemy_removed; ++i)
 	{
-		bool enemy_removed = false;
 		if (ball.ballBounds().intersects(enemies[i]->enemyBounds()))
 		{
 			// if Ball(bottom) - Block(top) < Block(bottom) - Ball(top) than we hit the block from the top
@@ -174,13 +172,14 @@ void Game::enemiesBallCollision()
 			bool ballFromLeft(std::abs((ball.ballBounds().left + ball.ballBounds().width) - enemies[i]->enemyBounds().left) <
 							  std::abs((enemies[i]->enemyBounds().left + enemies[i]->enemyBounds().width) - ball.ballBounds().left));
 
-			// if minOverlapVertically is less than minOverlapHorizontally, we hit block vertically
+			// if minOverlapVertically is less than minOverlapHorizontally, we hit the block vertically
 			float minOverlapVertically{
 				ballFromTop ?
 				(ball.ballBounds().top + ball.ballBounds().height - enemies[i]->enemyBounds().top) :
 				(enemies[i]->enemyBounds().top + enemies[i]->enemyBounds().height - ball.ballBounds().top)
 			};
 
+			// if minOverlapHorizontally is less than minOverlapVertically, we hit the block horizontally <-->
 			float minOverlapHorizontally{
 				ballFromLeft ?
 				(ball.ballBounds().left + ball.ballBounds().width - enemies[i]->enemyBounds().left) :
@@ -192,10 +191,14 @@ void Game::enemiesBallCollision()
 				if (ballFromTop)
 				{
 					ball.moveUp();
+					enemies.erase(enemies.begin() + i);
+					enemy_removed = true;
 				}
 				else
 				{
 					ball.moveDown();
+					enemies.erase(enemies.begin() + i);
+					enemy_removed = true;
 				}
 			}
 			else if (std::abs(minOverlapHorizontally) < std::abs(minOverlapVertically))
@@ -203,42 +206,16 @@ void Game::enemiesBallCollision()
 				if (ballFromLeft)
 				{
 					ball.moveLeft();
+					enemies.erase(enemies.begin() + i);
+					enemy_removed = true;
 				}
 				else
 				{
 					ball.moveRight();
+					enemies.erase(enemies.begin() + i);
+					enemy_removed = true;
 				}
 			}
-
-
-			//if ((ball.ballBounds().top <= (enemies[i]->enemyBounds().top + enemies[i]->enemyBounds().height) && !enemy_removed))
-			//{
-			//	ball.moveDown();
-			//	enemies.erase(enemies.begin() + i);
-			//	bool enemy_removed = true;
-			//}
-				//if (((ball.ballBounds().top + ball.ballBounds().height) >= enemies[i]->enemyBounds().top) && !enemy_removed)
-				//{
-				//	ball.moveUp();
-				//	enemies.erase(enemies.begin() + i);
-				//	bool enemy_removed = true;
-				//}
-
-			//enemies.erase(enemies.begin() + i);
-			//std::cout << enemies.size() << "\n";
-
-			//if ((ball.ballBounds().left + ball.ballBounds().width) >= enemies[i].enemyBounds().left)
-			//{
-			//	ball.moveLeft();
-			//	enemies.erase(enemies.begin() + i);
-			//}
-
-			//if (ball.ballBounds().left <= enemies[i].enemyBounds().left + enemies[i].enemyBounds().width)
-			//{
-			//	ball.moveRight();
-			//	enemies.erase(enemies.begin() + i);
-			//}
-
 		}
 	}
 }

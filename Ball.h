@@ -20,7 +20,7 @@ private:
 	void initShape();
 
 public:
-	Ball(float x = 30.f, float y = 40.f);
+	Ball(float x = 300.f, float y = 200.f);
 	virtual ~Ball();
 
 	// accessors

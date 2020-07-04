@@ -3,13 +3,18 @@
 
 void Player::initVariables()
 {
-	movementSpeed = 10.f;
+	movementSpeed = 11.f;
 }
 
 void Player::initShape()
 {
 	shape.setFillColor(Color::Green);
-	shape.setSize(Vector2f(140.f, 30.f));
+
+	float shape_width = 140.f;
+	float shape_height = 30.f;
+	shape.setSize(Vector2f(shape_width, shape_height));
+
+	//shape.setOrigin(shape_width / 2, shape_height / 2);
 
 
 }
