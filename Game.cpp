@@ -18,11 +18,30 @@ void Game::initWindow()
 
 }
 
+void Game::initGUI()
+{
+	// load font
+	if (!font.loadFromFile("Fonts/PixellettersFull.ttf"))
+	{
+		std::cout << "ERROR::GAME::Failed to load font pixellettersfull" << "\n";
+	}
+
+	// init game over text
+	gameOverText.setFont(font);
+	gameOverText.setCharacterSize(60);
+	gameOverText.setFillColor(Color::Red);
+	gameOverText.setString("Game Over!");
+	gameOverText.setPosition(
+		window->getSize().x / 2.f - gameOverText.getGlobalBounds().width / 2.f,
+		window->getSize().y / 2.f - gameOverText.getGlobalBounds().height / 2.f);
+}
+
 // constructors / destructors
 Game::Game()
 {
 	initVariables();
 	initWindow();
+	initGUI();
 }
 
 Game::~Game()
@@ -36,10 +55,18 @@ Game::~Game()
 	}
 }
 
-// accessors
-const bool Game::running() const
+void Game::run()
 {
-	return window->isOpen();
+	while (window->isOpen())
+	{
+		pollEvents();
+
+		if (ball.ballBounds().top + ball.ballBounds().height < window->getSize().y)
+		{
+			update();
+		}
+		render();
+	}
 }
 
 // functions
@@ -223,7 +250,6 @@ void Game::enemiesBallCollision()
 void Game::update()
 {
 	updateInput();
-	pollEvents();
 	ball.update();
 	updatePlayerWindowCollision();
 	updateBallWindowCollision();
@@ -253,6 +279,13 @@ void Game::render()
 	}
 
 	ball.render(*window);
+
+	// game over text screen
+	if (ball.ballBounds().top + ball.ballBounds().height > window->getSize().y)
+	{
+		window->draw(gameOverText);
+	}
+
 
 	window->display();
 }

@@ -23,6 +23,11 @@ private:
 	VideoMode videoMode;
 	Event ev;
 
+	// GUI
+	Font font;
+
+	Text gameOverText;
+
 	bool endGame;
 
 	Player player;
@@ -34,16 +39,16 @@ private:
 	// private functions
 	void initVariables();
 	void initWindow();
+	void initGUI();
 
 public:
 	// constructors / destructors
 	Game();
 	virtual ~Game();
 
-	// accessors
-	const bool running() const;
-
 	// functions
+	void run();
+
 	void pollEvents();
 	void updateInput();
 	void spawnEnemies();
