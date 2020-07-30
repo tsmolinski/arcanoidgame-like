@@ -164,16 +164,16 @@ void Game::updateBallWindowCollision()
 
 void Game::playerBallCollision()
 {
-	// +70.f, because paddle origin is in top left corner, the paddle width is 140.f, 70.f is the middle of the paddle
+	// paddle origin is in top left corner, the paddle width is 140.f, 70.f is the middle of the paddle
 	if (player.playerBounds().intersects(ball.ballBounds()) &&
-		ball.getPosition().x < player.getPosition().x + 70.f)
+		ball.getPosition().x < player.getPosition().x + player.playerBounds().width / 2)
 	{
 		ball.moveUp();
 		ball.moveLeft();
 	}
 
 	if (player.playerBounds().intersects(ball.ballBounds()) &&
-		ball.getPosition().x > player.getPosition().x + 70.f)
+		ball.getPosition().x > player.getPosition().x + player.playerBounds().width / 2)
 	{
 		ball.moveUp();
 		ball.moveRight();
@@ -187,7 +187,7 @@ void Game::enemiesBallCollision()
 // change ball dir -> Ball::update()
 {
 	bool enemy_removed = false;
-	for (int i = 0; i < enemies.size() && !enemy_removed; ++i)
+	for (int i = 0; i < enemies.size() && !enemy_removed; i++)
 	{
 		if (ball.ballBounds().intersects(enemies[i]->enemyBounds()))
 		{
